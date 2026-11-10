@@ -7,8 +7,10 @@
       "Action": "*",
       "Resource": "*",
       "Condition": {
-        "StringEquals": {
-          "aws:PrincipalType": "Root"
+        "StringLike": {
+          "aws:PrincipalArn": [
+            "arn:aws:iam::*:root"
+          ]
         }
       }
     }

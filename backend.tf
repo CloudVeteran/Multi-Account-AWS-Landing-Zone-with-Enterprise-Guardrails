@@ -1,12 +1,12 @@
-# Placeholder remote state. This configuration does not create the bucket.
+# Partial S3 backend. encrypt and use_lockfile are set here.
+# bucket, region, and kms_key_id come from backend.hcl (see backend.hcl.example):
+#   terraform init -backend-config=backend.hcl
 # Validate without contacting AWS:
 #   terraform init -backend=false && terraform validate
 terraform {
   backend "s3" {
-    bucket       = "your-terraform-state-bucket-here"
     key          = "landing-zone/terraform.tfstate"
-    region       = "us-east-1"
-    use_lockfile = true
     encrypt      = true
+    use_lockfile = true
   }
 }

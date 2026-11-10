@@ -17,3 +17,6 @@ override.tf.json
 # Saved plans can contain sensitive values
 tfplan
 *.tfplan
+
+# Account-specific backend settings. Copy backend.hcl.example and fill it in.
+backend.hcl

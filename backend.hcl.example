@@ -1,0 +1,13 @@
+# Copy to backend.hcl and replace the three values with bootstrap outputs.
+#   cp backend.hcl.example backend.hcl
+#   terraform init -backend-config=backend.hcl
+#
+# bucket     — output state_bucket_name
+# region     — output state_bucket_region
+# kms_key_id — output state_kms_key_arn
+#
+# encrypt and use_lockfile are set in backend.tf.
+
+bucket     = "your-terraform-state-bucket"
+region     = "us-east-1"
+kms_key_id = "arn:aws:kms:us-east-1:111122223333:key/12345678-1234-4234-a234-1234567890ab"
