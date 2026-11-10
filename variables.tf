@@ -1,23 +1,23 @@
 variable "aws_region" {
-  description = "AWS region to deploy resources"
+  description = "Region for the AWS provider. GuardDuty and Security Hub are created only in this Region."
   type        = string
   default     = "us-east-1"
 }
 
 variable "organization_name" {
-  description = "Short name for your organization (used in account names)"
+  description = "Prefix used in member account names and email addresses."
   type        = string
   default     = "acme-corp"
 }
 
 variable "email_domain" {
-  description = "Email domain for creating AWS accounts"
+  description = "Domain used to build member account email addresses. Each address must be unique and unused by AWS."
   type        = string
   default     = "acme-corp.com"
 }
 
 variable "tags" {
-  description = "Default tags applied to all resources"
+  description = "Tags applied to organizational units, member accounts, service control policies, and the GuardDuty detector."
   type        = map(string)
   default = {
     Project     = "Landing-Zone"
