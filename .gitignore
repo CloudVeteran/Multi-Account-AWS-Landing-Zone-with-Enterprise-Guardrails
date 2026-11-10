@@ -1,0 +1,19 @@
+# Terraform working directory and state
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.tfstate.lock.info
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Local overrides can contain credentials
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Saved plans can contain sensitive values
+tfplan
+*.tfplan
