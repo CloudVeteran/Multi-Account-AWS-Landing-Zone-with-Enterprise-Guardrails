@@ -4,6 +4,10 @@
 
 Terraform configuration for a small AWS Organizations landing zone. Applied from the management account, it creates three organizational units and six member accounts, attaches two service control policies at the organization root, and turns on GuardDuty plus the Security Hub NIST SP 800-53 Rev. 5 standard in that management account. The tables below map those controls to selected NIST SP 800-53 Rev. 5 requirements.
 
+![Architecture: the management account runs GuardDuty and Security Hub in one Region and owns an organization. Two guardrails on the organization root cover six accounts in the Security, Workloads, and Infrastructure groups.](docs/architecture.png)
+
+**How to read this:** Start at the management account: it runs GuardDuty and Security Hub in one Region and owns the organization, whose root carries two guardrails down to six accounts in three groups (the guardrails do not apply to the management account).
+
 ## Status / Scope
 
 This is a lab and portfolio project. It is not production infrastructure, and it is not a FedRAMP Ready package, a FedRAMP authorization, or an Authority to Operate.
@@ -78,6 +82,8 @@ outputs.tf
 policies/deny-root.json
 policies/deny-public-s3.json
 modules/landing-zone/        Organization, organizational units, member accounts
+docs/diagram.py              Renders docs/architecture.png
+docs/architecture.png        Picture under the introduction
 ```
 
 ## Usage
@@ -128,25 +134,42 @@ The default tags include `Owner = Marlon` and `Compliance = NIST-800-53`. The co
 
 ```mermaid
 flowchart TD
-  Mgmt["Management account<br/>GuardDuty detector<br/>Security Hub NIST SP 800-53 Rev. 5<br/>one Region"]
-  Root["Organization root<br/>SCP DenyRootAccess<br/>SCP DenyPublicS3Buckets"]
-  SecOU["OU: Security"]
-  WorkOU["OU: Workloads"]
-  InfraOU["OU: Infrastructure"]
+  Mgmt["Management account<br/>Threat detection with GuardDuty<br/>Security Hub NIST 800-53 Rev. 5 checks<br/>one Region"]
+  Root["Organization root"]
+  ScpRoot["Blocks actions by principal type Root (SCP)"]
+  ScpS3["Blocks S3 ACL/policy changes over non-TLS (SCP)"]
+  SecOU["Security organizational unit"]
+  WorkOU["Workloads organizational unit"]
+  InfraOU["Infrastructure organizational unit"]
+  SecurityAcct["Security account"]
+  LoggingAcct["Logging account"]
+  AuditAcct["Audit account"]
+  ProdAcct["Production account"]
+  NonProdAcct["Non-production account"]
+  SharedAcct["Shared services account"]
 
-  Mgmt --- Root
+  Mgmt --> Root
+  Root --> ScpRoot
+  Root --> ScpS3
   Root --> SecOU
   Root --> WorkOU
   Root --> InfraOU
-  SecOU --> SecurityAcct["security"]
-  SecOU --> LoggingAcct["logging"]
-  SecOU --> AuditAcct["audit"]
-  WorkOU --> ProdAcct["prod"]
-  WorkOU --> NonProdAcct["nonprod"]
-  InfraOU --> SharedAcct["shared-services"]
+  SecOU --> SecurityAcct
+  SecOU --> LoggingAcct
+  SecOU --> AuditAcct
+  WorkOU --> ProdAcct
+  WorkOU --> NonProdAcct
+  InfraOU --> SharedAcct
 ```
 
-Service control policies on the organization root do not govern the management account.
+Same structure as the picture above. Policies on the organization root are inherited by the six member accounts and do not govern the management account.
+
+Regenerate the PNG with [diagrams](https://diagrams.mingrammer.com/) and Graphviz (`dot` on your PATH):
+
+```bash
+pip install diagrams
+python docs/diagram.py
+```
 
 ## License
 
