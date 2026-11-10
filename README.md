@@ -1,5 +1,7 @@
 # Multi-Account AWS Landing Zone
 
+[![Terraform](https://github.com/CloudVeteran/Multi-Account-AWS-Landing-Zone-with-Enterprise-Guardrails/actions/workflows/terraform.yml/badge.svg)](https://github.com/CloudVeteran/Multi-Account-AWS-Landing-Zone-with-Enterprise-Guardrails/actions/workflows/terraform.yml)
+
 Terraform configuration for a small AWS Organizations landing zone. Applied from the management account, it creates three organizational units and six member accounts, attaches two service control policies at the organization root, and turns on GuardDuty plus the Security Hub NIST SP 800-53 Rev. 5 standard in that management account. The tables below map those controls to selected NIST SP 800-53 Rev. 5 requirements.
 
 ## Status / Scope
