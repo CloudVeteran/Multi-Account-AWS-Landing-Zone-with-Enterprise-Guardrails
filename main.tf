@@ -14,7 +14,7 @@ module "landing_zone" {
 # Service control policies do not apply to the management account.
 resource "aws_organizations_policy" "deny_root" {
   name        = "DenyRootAccess"
-  description = "Deny all actions when aws:PrincipalType equals Root."
+  description = "Deny all actions by the account root user (aws:PrincipalArn like arn:aws:iam::*:root)."
   type        = "SERVICE_CONTROL_POLICY"
   content     = file("${path.module}/policies/deny-root.json")
   tags        = var.tags

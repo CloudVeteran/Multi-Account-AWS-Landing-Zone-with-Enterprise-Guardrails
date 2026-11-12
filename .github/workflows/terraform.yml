@@ -28,7 +28,11 @@ jobs:
         run: terraform fmt -check -recursive
 
       - name: Terraform init
-        run: terraform init -backend=false
+        run: |
+          terraform init -backend=false
+          terraform -chdir=bootstrap init -backend=false
 
       - name: Terraform validate
-        run: terraform validate
+        run: |
+          terraform validate
+          terraform -chdir=bootstrap validate

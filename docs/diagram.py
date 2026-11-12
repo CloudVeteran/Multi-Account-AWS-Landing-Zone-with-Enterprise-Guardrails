@@ -40,7 +40,7 @@ LINE = "#687078"
 
 # Plain-English labels. The wording stays inside what the guardrails table
 # says the JSON does.
-SCP_PRINCIPAL_TYPE_ROOT = "Blocks actions by\nprincipal type Root\n(SCP)"
+SCP_ROOT_USER = "Blocks actions by\nthe account root user\n(SCP)"
 SCP_S3_NON_TLS = "Blocks S3 ACL/policy\nchanges over non-TLS\n(SCP)"
 
 
@@ -183,9 +183,9 @@ def main() -> None:
                     "labelloc": "b",
                 },
             ) as guardrails:
-                principal_type_root = aws_icon(IAMPermissions, SCP_PRINCIPAL_TYPE_ROOT)
+                root_user = aws_icon(IAMPermissions, SCP_ROOT_USER)
                 s3_non_tls = aws_icon(IAMPermissions, SCP_S3_NON_TLS)
-                order_row(guardrails, principal_type_root, s3_non_tls)
+                order_row(guardrails, root_user, s3_non_tls)
 
             with Cluster(
                 "Security",
@@ -229,10 +229,10 @@ def main() -> None:
             # One labeled edge into the guardrails box, then an edge to each OU.
             # The invisible edges only keep the three groups under that box.
             # Ranking the OU icons from the parent pulls them out of the boxes.
-            root >> Edge(label="attached") >> principal_type_root
+            root >> Edge(label="attached") >> root_user
             root >> Edge(style="invis") >> s3_non_tls
             for ou in (security_ou, workloads_ou, infrastructure_ou):
-                principal_type_root >> Edge(style="invis") >> ou
+                root_user >> Edge(style="invis") >> ou
                 root >> Edge(constraint="false") >> ou
 
         management_account >> Edge(label="owns", minlen="2") >> root
